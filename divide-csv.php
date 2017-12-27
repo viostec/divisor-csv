@@ -31,7 +31,11 @@ while($temLinhas) {
     $res = $csvReader->setOffset($offset)->setLimit($numLinhas)->fetchAll();
     if(count($res) > 0) {
         echo count($res) . " linhas encontradas na página {$page} com offset {$offset}\n";
-        $csvWriter = \League\Csv\Writer::createFromPath(__DIR__ . "/output/{$nameCsv}-{$page}.csv", 'w+');
+        $outputDir = __DIR__ . "/output";
+        if (!is_dir($outputDir)) {
+            mkdir($outputDir);
+        }
+        $csvWriter = \League\Csv\Writer::createFromPath("$outputDir/{$nameCsv}-{$page}.csv", 'w+');
         $csvWriter->setDelimiter(";");
         $csvWriter->insertOne($headers);
 
